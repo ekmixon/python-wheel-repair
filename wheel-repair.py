@@ -54,9 +54,11 @@ with zipfile.ZipFile(args.WHEEL_FILE, "r") as wheel:
     pyd_path = list(filter(lambda x: x.endswith(".pyd"), wheel.namelist()))[0]
     tmp_pyd_path = os.path.join(old_wheel_dir, package_name, os.path.basename(pyd_path))
 
-mapping = {}
 hashed_name = hash_filename(args.DLL)
-mapping[os.path.basename(args.DLL).encode("ascii")] = hashed_name.encode("ascii")
+mapping = {
+    os.path.basename(args.DLL).encode("ascii"): hashed_name.encode("ascii")
+}
+
 shutil.copy(
     args.DLL,
     os.path.join(new_wheel_dir, package_name, hashed_name),
